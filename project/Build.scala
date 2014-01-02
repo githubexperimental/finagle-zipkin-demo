@@ -17,7 +17,7 @@ object DemoBuild extends Build {
   val main = Project(id = appName, base = file("."),
     settings = Project.defaultSettings ++ Seq(
       name := appName,
-      organization := "bwinparty",
+      organization := "bp",
       version := appVersion,
       scalaVersion := "2.9.2",
       libraryDependencies ++=appDependencies,
