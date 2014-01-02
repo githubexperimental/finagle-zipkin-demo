@@ -11,8 +11,9 @@ import com.twitter.finagle.zipkin.thrift.ZipkinTracer
 import com.twitter.finagle.tracing.Trace
 import com.twitter.finagle.tracing.Annotation
 import scala.Array.canBuildFrom
+import com.twitter.finagle.tracing.Tracer
 
-class FrontendService(name : String, backendServerSetCluster: Cluster[SocketAddress]) extends Service[HttpRequest, HttpResponse] {
+class FrontendService(name : String, backendServerSetCluster: Cluster[SocketAddress], zipkinTracer : Tracer) extends Service[HttpRequest, HttpResponse] {
   //    val serverSetCluster=
 
   val client = ClientBuilder()
@@ -20,7 +21,7 @@ class FrontendService(name : String, backendServerSetCluster: Cluster[SocketAddr
     .hostConnectionLimit(1) // TODO testing
     .name("Client in FE Server " + name)
     .codec(Http().enableTracing(true))
-    .tracerFactory(ZipkinTracer.mk(host="10.1.251.180",port=9410, sampleRate=1.0f))
+    .tracerFactory(zipkinTracer)
     .retries(5)
     .build()
 
